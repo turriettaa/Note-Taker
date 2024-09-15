@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const dbPath = path.join(__dirname, 'db.json');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
@@ -25,9 +26,9 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
   
-  // GET /api/notes - Read the db.json file and return all saved notes as JSON
+  // GET /api/notes - Read the dbPath file and return all saved notes as JSON
 app.get('/api/notes', (req, res) => {
-    fs.readFile('./db.json', 'utf8', (err, data) => {
+    fs.readFile('./dbPath', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -36,11 +37,11 @@ app.get('/api/notes', (req, res) => {
     });
   });
   
-  // POST /api/notes - Receive a new note to save on the request body, add it to db.json, and return the new note
+  // POST /api/notes - Receive a new note to save on the request body, add it to dbPath, and return the new note
   app.post('/api/notes', (req, res) => {
     const newNote = { ...req.body, id: uuidv4() };
   
-    fs.readFile('./db.json', 'utf8', (err, data) => {
+    fs.readFile('./dbPath', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -49,7 +50,7 @@ app.get('/api/notes', (req, res) => {
       const notes = JSON.parse(data);
       notes.push(newNote);
   
-      fs.writeFile('./db.json', JSON.stringify(notes), (err) => {
+      fs.writeFile('./dbPath', JSON.stringify(notes), (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: 'Error saving note' });
@@ -63,7 +64,7 @@ app.get('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
     const noteId = req.params.id;
   
-    fs.readFile('./db.json', 'utf8', (err, data) => {
+    fs.readFile('./dbPath', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -72,7 +73,7 @@ app.delete('/api/notes/:id', (req, res) => {
       let notes = JSON.parse(data);
       notes = notes.filter(note => note.id !== noteId);
   
-      fs.writeFile('./db.json', JSON.stringify(notes), (err) => {
+      fs.writeFile('./dbPath', JSON.stringify(notes), (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: 'Error deleting note' });
