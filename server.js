@@ -28,7 +28,7 @@ app.get('/notes', (req, res) => {
   
   // GET /api/notes - Read the dbPath file and return all saved notes as JSON
 app.get('/api/notes', (req, res) => {
-    fs.readFile('dbPath', 'utf8', (err, data) => {
+    fs.readFile(dbPath, 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -41,7 +41,7 @@ app.get('/api/notes', (req, res) => {
   app.post('/api/notes', (req, res) => {
     const newNote = { ...req.body, id: uuidv4() };
   
-    fs.readFile('dbPath', 'utf8', (err, data) => {
+    fs.readFile(dbPath, 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -50,7 +50,7 @@ app.get('/api/notes', (req, res) => {
       const notes = JSON.parse(data);
       notes.push(newNote);
   
-      fs.writeFile('dbPath', JSON.stringify(notes), (err) => {
+      fs.writeFile(dbPath, JSON.stringify(notes), (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: 'Error saving note' });
@@ -64,7 +64,7 @@ app.get('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
     const noteId = req.params.id;
   
-    fs.readFile('dbPath', 'utf8', (err, data) => {
+    fs.readFile(dbPath, 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error reading notes' });
@@ -73,7 +73,7 @@ app.delete('/api/notes/:id', (req, res) => {
       let notes = JSON.parse(data);
       notes = notes.filter(note => note.id !== noteId);
   
-      fs.writeFile('dbPath', JSON.stringify(notes), (err) => {
+      fs.writeFile(dbPath, JSON.stringify(notes), (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: 'Error deleting note' });
