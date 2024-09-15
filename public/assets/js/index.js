@@ -36,27 +36,27 @@ const getNotes = () =>
     }
   });
 
-const saveNote = (note) =>
-  fetch('/api/notes', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title: noteTitle, text: noteText }),
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Success:', data);
-    // Handle successful note creation here
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+  const saveNote = (note) =>
+    fetch('/api/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(note),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      // Handle successful note creation here
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
@@ -151,16 +151,16 @@ const renderNoteList = async (notes) => {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
 
-  let noteListItems = []; // Declare noteListItems here
+  let noteListItems = [];
 
   // Returns HTML element with or without a delete button
-  const createLi = (text, delBtn = true) => {
+  const createLi = (note, delBtn = true) => {
     const liEl = document.createElement('li');
     liEl.classList.add('list-group-item');
 
     const spanEl = document.createElement('span');
     spanEl.classList.add('list-item-title');
-    spanEl.innerText = text;
+    spanEl.innerText = note.title;  // Use note.title instead of note
     spanEl.addEventListener('click', handleNoteView);
 
     liEl.append(spanEl);
@@ -183,11 +183,11 @@ const renderNoteList = async (notes) => {
   };
 
   if (jsonNotes.length === 0) {
-    noteListItems.push(createLi('No saved Notes', false));
+    noteListItems.push(createLi({ title: 'No saved Notes' }, false));
   }
 
   jsonNotes.forEach((note) => {
-    const li = createLi(note.title);
+    const li = createLi(note);
     li.dataset.note = JSON.stringify(note);
 
     noteListItems.push(li);
