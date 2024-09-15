@@ -45,7 +45,11 @@ app.get('/notes', (req, res) => {
  
   // POST /api/notes - Receive a new note to save on the request body, add it to dbPath, and return the new note
   app.post('/api/notes', (req, res) => {
-    const newNote = { ...req.body, id: uuidv4() };
+    const newNote = {
+      title: req.body.title,
+      text: req.body.text,
+      id: uuidv4()
+    };
   
     fs.readFile(dbPath, 'utf8', (err, data) => {
       if (err) {
