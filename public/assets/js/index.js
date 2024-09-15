@@ -146,9 +146,12 @@ const renderNoteList = async (notes) => {
   if (notes instanceof Response) {
     jsonNotes = await notes.json();
   }
-    if (window.location.pathname === '/notes') {
+
+  if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
+
+  let noteListItems = []; // Declare noteListItems here
 
   // Returns HTML element with or without a delete button
   const createLi = (text, delBtn = true) => {
