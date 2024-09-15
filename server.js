@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const dbPath = path.join(__dirname, 'db.json');
+const dbPath = path.join(__dirname, 'db', 'db.json');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
