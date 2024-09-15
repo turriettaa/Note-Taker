@@ -4,6 +4,8 @@
 
 Note Taker is a simple yet powerful application that allows users to write, save, and delete notes. This application uses an Express.js back end and saves and retrieves note data from a JSON file.
 
+<img src="Screenshot 2024-09-14 225858.png" alt="Site Screenshot">
+
 ## Features
 
 - Create new notes with a title and text content
