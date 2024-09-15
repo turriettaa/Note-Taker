@@ -40,9 +40,22 @@ const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note)
+    body: JSON.stringify({ title: noteTitle, text: noteText }),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Success:', data);
+    // Handle successful note creation here
+  })
+  .catch((error) => {
+    console.error('Error:', error);
   });
 
 const deleteNote = (id) =>
