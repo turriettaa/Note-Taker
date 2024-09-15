@@ -9,25 +9,17 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// GET /notes - Return the notes.html file
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'notes.html'));
-  });
-  
-  // GET * - Return the index.html file for all other routes
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });
-  
+
+
   // GET /api/notes - Read the dbPath file and return all saved notes as JSON
-app.get('/api/notes', (req, res) => {
+  app.get('/api/notes', (req, res) => {
     fs.readFile(dbPath, 'utf8', (err, data) => {
       if (err) {
         console.error(err);
@@ -36,7 +28,21 @@ app.get('/api/notes', (req, res) => {
       res.json(JSON.parse(data));
     });
   });
+ 
+  app.use(express.static('public'));
+
+// GET /notes - Return the notes.html file
+app.get('/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'notes.html'));
+});
+
+
+  // GET * - Return the index.html file for all other routes
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
   
+ 
   // POST /api/notes - Receive a new note to save on the request body, add it to dbPath, and return the new note
   app.post('/api/notes', (req, res) => {
     const newNote = { ...req.body, id: uuidv4() };
