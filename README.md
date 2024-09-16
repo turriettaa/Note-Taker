@@ -42,5 +42,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Acknowledgements
 
 This project was completed as part of the [UC Berkeley Coding Bootcamp] curriculum.
+
 Starter code was provided by the bootcamp, with key functionalities implemented by [Alejandro Turrietta].
+
 Assisted by Amazon Q
